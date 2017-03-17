@@ -3,11 +3,15 @@ angular.module('app')
     function() {
       return {
         defaults: {
-          rect: {
-            width: 260,
-            height: 38,
-            'stroke-width': 1,
-            stroke: '#ccc'
+          ellipse: {
+            cx:"60",
+            cy:"30",
+            rx:"100",
+            ry:"40"
+            // width: 260,
+            // height: 38,
+            // 'stroke-width': 1,
+            // stroke: '#ccc'
           },
           'circle.outer': {
             cx: 15,
@@ -21,6 +25,9 @@ angular.module('app')
           },
           '.cross': {
             d: 'M0,0 L10,10 M10,0 L0,10'
+          },
+          '.editDag': {
+            d: 'M0 0 L10 0 L0 10 Z'
           }
         },
         computed: function(backendModelParams) {
@@ -41,6 +48,10 @@ angular.module('app')
               text: '\ue60f'
             },
             '.icon.company': {
+              display: showBeneficiaryIcon ? 'none': 'block',
+              text: '\ue6a0'
+            },
+            '.icon.task': {
               display: showBeneficiaryIcon ? 'none': 'block',
               text: '\ue6a0'
             },

@@ -62,7 +62,7 @@
 	content: "\e60e";
 }
 .ce-icon-user:before {
-	content: "\e60f";
+	content: "\e60a";
 }
 .ce-icon-users:before {
 	content: "\e610";
@@ -272,7 +272,7 @@
 	content: "\e696";
 }
 .ce-icon-folder:before {
-	content: "\e6a0";
+	content: "\e695";
 }
 .ce-icon-archive:before {
 	content: "\e6a1";
@@ -666,4 +666,19 @@
 }
 .ce-icon-file-text:before {
 	content: "\f15c";
+}
+/*Customised Css goes here*/
+.graph-tools > * {
+    width: 346px;
+}
+
+.graph-tools .fabric .instance-template {
+    margin-left: 5px;
+    width: 94px;
+    float: left;
+}
+.disabled-page{
+	cursor:no-drop;
+	pointer-events: none;
+	opacity: 0.4;
 }

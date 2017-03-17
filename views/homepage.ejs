@@ -1,12 +1,20 @@
-<div class="top-bar">angular-jointjs-graph demo application</div>
-<div class="graph-main" ng-app="app" ng-controller="GraphResourcesController">
+<div class="top-bar"> 
+  <button id="start" class="btn btn-info">Start</button>
+  <button id="saveDageflow" class="btn btn-danger pull-right" >Save Dage flow</button>
+  <center style="margin-top:-34px">Start Dag</center>
+</div>
+<div id="contain-graph" class="graph-main disabled-page"  ng-app="app" ng-controller="GraphResourcesController">
+
   <graph>
     <graph-side-panel-tools>
       <graph-new-entity entity-identifier="beneficiary">
-        <i class="ce-icon-user"></i>Beneficiary
+        <i class="ce-icon-user"></i>Dag
       </graph-new-entity>
       <graph-new-entity entity-identifier="company">
-        <i class="ce-icon-folder"></i>Company
+        <i class="ce-icon-folder"></i>Stage
+      </graph-new-entity>
+       <graph-new-entity entity-identifier="task">
+        <i class="ce-icon-folder"></i>Task
       </graph-new-entity>
       <graph-existing-entities entity-identifier="beneficiary">
         <div ng-click="selectEntity(entity, entityIdentifier)">
@@ -24,4 +32,12 @@
     <graph-side-panel-details>
     </graph-side-panel-details>
   </graph>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="dagFlowEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" id="dagProperties">
+     
+    </div>
+  </div>
 </div>

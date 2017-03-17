@@ -4,7 +4,7 @@ angular.module('app')
       return {
         modelUpdateCallback: function(jointModel) {
           jointModel.attr('.icon.beneficiary', { display: 'block' });
-          jointModel.attr('rect', { fill: 'lightblue' });
+          jointModel.attr('ellipse', { fill: 'lightblue' });
         }
       };
     }

@@ -89,7 +89,29 @@ body {
       transition: all linear 0.1s;
     }
   }
+// Dag CSS
+.editDag-element {
+    opacity: 0;
+    transition: all linear 0.1s;
+    cursor: pointer;
 
+    .editDag {
+      stroke: red;
+      stroke-width: 2;
+      stroke-linecap: round;
+      opacity: 0.4;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  &:hover {
+    .editDag-element {
+      opacity: 1;
+      transition: all linear 0.1s;
+    }
+  }
   .connection-port {
     cursor: crosshair;
   }

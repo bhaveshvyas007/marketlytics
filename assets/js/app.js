@@ -6,13 +6,15 @@ angular.module('angular-jointjs-graph')
       JointGraphConfigProvider.init({
         modelIdKey: 'id',
         entityModelProperties: {
-          beneficiary: ['name', 'country'],
-          company: ['name', 'country']
+          beneficiary: ['name', 'desc'],
+          company: ['name', 'desc'],
+          task: ['name', 'desc']
         },
         linkModelProperties: [],
         entityCreationCallbacks: {
           beneficiary: 'BeneficiaryCallbacks',
-          company: 'CompanyCallbacks'
+          company: 'CompanyCallbacks',
+          task: 'TaskCallbacks'
         },
         entityMarkupParams: 'NodeParams',
         linkMarkupParams: 'LinkParams',

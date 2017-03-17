@@ -14,6 +14,10 @@ angular.module('app')
           var url = '/beneficiary';
           return $resource(url + '/:id', { id: '@id' }, { update: { method: 'PUT' } });
         },
+        task: function() {
+          var url = '/beneficiary';
+          return $resource(url + '/:id', { id: '@id' }, { update: { method: 'PUT' } });
+        },
         relations: function() {
           var url = '/ownershipRelation';
           return $resource(url + '/:id', { id: '@id' }, { update: { method: 'PUT' } });
