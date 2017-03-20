@@ -352,6 +352,7 @@ angular.module('angular-jointjs-graph')
             $("#saveDageflow").click(function () {
               var getJointGrapObject = JointGraph.toJSON();
               console.log(getJointGrapObject);
+              console.log(JSON.stringify(getJointGrapObject));
               var stages = {};
               var tasks = {};
               var links = {};
@@ -409,8 +410,217 @@ angular.module('angular-jointjs-graph')
               angular.forEach(stages,function(val){
                 inArrayFormat.push(val);
               });
-              console.log('inArrayFormat',JSON.stringify(inArrayFormat));
-              
+              console.log("*******DAG JSON*******");
+              console.log(JSON.stringify(inArrayFormat));
+
+              var joonaObj = [];
+              angular.forEach(inArrayFormat,function(val){
+                
+                joonaObj.push(
+                  {"type":"html.Element",
+                  "position":{
+                  "x":649,
+                  "y":95
+                  },
+                  "size":{
+                  "width":1,
+                  "height":1
+                  },
+                  "angle":0,
+                  "backendModelParams":{
+                  "name":"<name>",
+                  "desc":"undefined",
+                  "id":val.stageId,
+                  "entityIdentifier":"company",
+                  "country":"<country>"
+                  },
+                  "options":{
+                  "interactive":true
+                  },
+                  "isChartNode":true,
+                  "id":"d776acb0-7fe8-4f67-86a2-aea954bb9d23",
+                  "z":1,
+                  "attrs":{
+                  "ellipse":{
+                  "fill":"lightcoral"
+                  },
+                  ".icon.beneficiary":{
+                  "display":"none",
+                  "text":""
+                  },
+                  ".icon.company":{
+                  "display":"block",
+                  "text":""
+                  },
+                  ".icon.task":{
+                  "display":"block",
+                  "text":""
+                  },
+                  ".name":{
+                  "text":"<name>",
+                  "y":"19px",
+                  "x-alignment":"left"
+                  },
+                  ".country":{
+                  "text":"<country>",
+                  "y":"31px",
+                  "x-alignment":"left"
+                  }
+                  }
+                });
+
+                if(val.dependsOn.length > 0){
+                  angular.forEach(val.dependsOn,function (dependancy) {
+                    joonaObj.push(
+                    {
+                      "type":"link",
+                      "source":{
+                      "id":dependancy
+                      },
+                      "target":{
+                      "id":val.stageId
+                      },
+                      "backendModelParams":{
+                      "id":1
+                      },
+                      "isChartNode":false,
+                      "id":val.stageId+"_"+dependancy,
+                      "z":3,
+                      "vertices":[
+                      {
+                      "x":592.5,
+                      "y":220
+                      }
+                      ],
+                      "attrs":{
+                      ".marker-target":{
+                      "d":"M 10 0 L 0 5 L 10 10 z"
+                      },
+                      ".marker-source":{
+                      "display":"none"
+                      },
+                      ".marker-vertex-remove-area":{
+                      "display":"none"
+                      },
+                      ".marker-vertex-remove":{
+                      "display":"none"
+                      },
+                      ".marker-vertex":{
+                      "r":"5"
+                      }
+                      }
+                    }
+                  )
+                  });
+                }
+
+                if(val.tasks.length > 0){
+                  angular.forEach(val.tasks,function (task) {
+                    joonaObj.push(
+                      {
+                        "type":"html.Element",
+                        "position":{
+                        "x":419,
+                        "y":278
+                        },
+                        "size":{
+                        "width":1,
+                        "height":1
+                        },
+                        "angle":0,
+                        "backendModelParams":{
+                        "name":"<name>",
+                        "desc":"undefined",
+                        "id":1,
+                        "entityIdentifier":"task",
+                        "country":"<country>"
+                        },
+                        "options":{
+                        "interactive":true
+                        },
+                        "isChartNode":true,
+                        "id":task.taskId,
+                        "z":2,
+                        "attrs":{
+                          "ellipse":{
+                          "fill":"lightblue"
+                          },
+                          ".icon.beneficiary":{
+                          "display":"none",
+                          "text":""
+                          },
+                          ".icon.company":{
+                          "display":"block",
+                          "text":""
+                          },
+                          ".icon.task":{
+                          "display":"block",
+                          "text":""
+                          },
+                          ".name":{
+                          "text":"<name>",
+                          "y":"19px",
+                          "x-alignment":"left"
+                          },
+                          ".country":{
+                          "text":"<country>",
+                          "y":"31px",
+                          "x-alignment":"left"
+                          }
+                        }
+                      }
+                    )
+                    if(task.dependsOn.length > 0){
+                      angular.forEach(task.dependsOn,function (dependancy) {
+                        joonaObj.push(
+                        {
+                          "type":"link",
+                          "source":{
+                          "id":dependancy
+                          },
+                          "target":{
+                          "id":task.taskId
+                          },
+                          "backendModelParams":{
+                          "id":1
+                          },
+                          "isChartNode":false,
+                          "id":task.taskId+"_"+dependancy,
+                          "z":3,
+                          "vertices":[
+                          {
+                          "x":592.5,
+                          "y":220
+                          }
+                          ],
+                          "attrs":{
+                            ".marker-target":{
+                            "d":"M 10 0 L 0 5 L 10 10 z"
+                            },
+                            ".marker-source":{
+                            "display":"none"
+                            },
+                            ".marker-vertex-remove-area":{
+                            "display":"none"
+                            },
+                            ".marker-vertex-remove":{
+                            "display":"none"
+                            },
+                            ".marker-vertex":{
+                            "r":"5"
+                            }
+                            }
+                          }
+                        )
+                      });
+                    }
+                  });
+                }
+
+              });
+              console.log("*******Converted JSON*******");
+              console.log(JSON.stringify(joonaObj));
+              $scope.graph.cells=joonaObj;
             });
             $scope.dagPopover = function (id, entityIdentifier) {
               console.log(id, entityIdentifier);
@@ -431,6 +641,16 @@ angular.module('angular-jointjs-graph')
               $("#saveDageChanges").attr("data-id", id);
               $("#saveDageChanges").attr("data-entityIdentifier", entityIdentifier);
               $('#dagFlowEdit').modal('show');
+               var name = $("g[model-id=" + id + "] .name tspan").html();
+               var country = $("g[model-id=" + id + "] .country tspan").html();
+               if(name.substr(0,1)=='&' || country.substr(0,1)=='&'){
+                 country=name="";
+               }
+               $('.modal-body #name').val(name);
+               $('.modal-body #country').val(country);
+                // var country = this.closest('.modal-body #pwd').val();
+                //alert(id);
+                
               //$scope.pushNewarrayElements(id);
               $("#saveDageChanges").click(function () {
                 var id = this.getAttribute("data-id");
