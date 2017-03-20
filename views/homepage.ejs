@@ -3,7 +3,174 @@
   <button id="saveDageflow" class="btn btn-danger pull-right" >Save Dage flow</button>
   <center style="margin-top:-34px">Start Dag</center>
 </div>
-<div id="contain-graph" class="graph-main disabled-page"  ng-app="app" ng-controller="GraphResourcesController">
+<style>
+            /*!
+      * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+      * Copyright 2013-2016 Start Bootstrap
+      * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+      */
+
+      body {
+          overflow-x: hidden;
+      }
+
+      /* Toggle Styles */
+
+      #wrapper {
+          padding-left: 0;
+          -webkit-transition: all 0.5s ease;
+          -moz-transition: all 0.5s ease;
+          -o-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+      }
+
+      #wrapper.toggled {
+          padding-left: 250px;
+      }
+
+      #sidebar-wrapper {
+          z-index: 1000;
+          position: fixed;
+          left: 250px;
+          width: 0;
+          height: 100%;
+          margin-left: -250px;
+          overflow-y: auto;
+          background: #000;
+          -webkit-transition: all 0.5s ease;
+          -moz-transition: all 0.5s ease;
+          -o-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+      }
+
+
+      #page-content-wrapper {
+          width: 100%;
+          position: absolute;
+          padding: 15px;
+      }
+
+      #wrapper.toggled #page-content-wrapper {
+          position: absolute;
+          margin-right: -250px;
+      }
+
+      /* Sidebar Styles */
+
+      .sidebar-nav {
+          position: absolute;
+          top: 0;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+      }
+
+      .sidebar-nav li {
+          text-indent: 20px;
+          line-height: 40px;
+      }
+
+      .sidebar-nav li a {
+          display: block;
+          text-decoration: none;
+          color: #999999;
+      }
+
+      .sidebar-nav li a:hover {
+          text-decoration: none;
+          color: #fff;
+          background: rgba(255,255,255,0.2);
+      }
+
+      .sidebar-nav li a:active,
+      .sidebar-nav li a:focus {
+          text-decoration: none;
+      }
+
+      .sidebar-nav > .sidebar-brand {
+          height: 65px;
+          font-size: 18px;
+          line-height: 60px;
+      }
+
+      .sidebar-nav > .sidebar-brand a {
+          color: #999999;
+      }
+
+      .sidebar-nav > .sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+      }
+
+      @media(min-width:768px) {
+          #wrapper {
+              padding-left: 0;
+          }
+
+          #wrapper.toggled {
+              padding-left: 250px;
+          }
+
+          #sidebar-wrapper {
+              width: 0;
+          }
+
+          #wrapper.toggled #sidebar-wrapper {
+              width: 220px;
+          }
+
+          #page-content-wrapper {
+              padding: 20px;
+              position: relative;
+          }
+
+          #wrapper.toggled #page-content-wrapper {
+              position: relative;
+              margin-right: 0;
+          }
+      }
+    </style>
+<div style="position: absolute;
+    width: 15%;
+    top: 50px;
+    bottom: 0;
+    background:black;">
+    
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="#">Meta Data</a>
+                </li>
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li>
+                    <a href="#">Business Rules</a>
+                </li>
+                <li>
+                    <a href="#">Data Quality Rules</a>
+                </li>
+                <li>
+                    <a href="#">Data Pod</a>
+                </li>
+                <li>
+                    <a href="#">Viz Pod</a>
+                </li>
+                <li>
+                    <a href="#">Admin</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        
+
+    </div>
+    </div>
+<div style="width:83%;right:0" id="contain-graph" class="graph-main disabled-page"  ng-app="app" ng-controller="GraphResourcesController">
 
   <graph>
     <graph-side-panel-tools>
