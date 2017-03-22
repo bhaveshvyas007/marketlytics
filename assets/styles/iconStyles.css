@@ -669,16 +669,19 @@
 }
 /*Customised Css goes here*/
 .graph-tools > * {
-    width: 346px;
+    width: 583px;
 }
 
 .graph-tools .fabric .instance-template {
     margin-left: 5px;
-    width: 94px;
+    min-width: 94px;
     float: left;
 }
 .disabled-page{
 	cursor:no-drop;
 	pointer-events: none;
 	opacity: 0.4;
+}
+.button-style{
+	width:100px;
 }

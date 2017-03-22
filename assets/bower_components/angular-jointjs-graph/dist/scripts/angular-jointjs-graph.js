@@ -115,7 +115,9 @@ angular.module('angular-jointjs-graph')
               top = Math.floor(e.clientY - elementOffset.top - pointerOffset.y),
               dropPoint = $window.g.point(left, top),
               entityAttributes = dataTransfer['entity-attributes'];
-
+              console.log(left,top);
+              console.log("dropPoint",JSON.stringify(dropPoint));
+              console.log("entityAttributes",JSON.stringify(entityAttributes));
             scope.$emit('graphDropEvent', {
               entityAttributes: entityAttributes,
               dropPoint: dropPoint
@@ -139,7 +141,6 @@ angular.module('angular-jointjs-graph')
 
             $scope.$on('graphResources', function (event, data) {
               JointGraphResources.set(data);
-
               data.graph.$get().then(function (graph) {
                 $scope.graph = graph;
                 return Object.keys(data.entities).map(function (key) {
@@ -345,12 +346,34 @@ angular.module('angular-jointjs-graph')
             }
 
             GraphSelection.onSelectionChange(function (selection) {
-              console.log(selection);
-              $scope.dagPopover(selection.selectedCellId, selection.entityIdentifier);
+              if(!selection){
+                return
+              }
+              //console.log(selection);
+              //$scope.dagPopover(selection.selectedCellId, selection.entityIdentifier);
               $scope.$broadcast('graphSelection', selection);
             });
+
+            function updateProperties(id,prop) {
+              // console.log('updated object',$scope.graph.content);return;
+              // console.log('joint graph',$scope.graph.content);return;
+              // var getJointGrapObject = JointGraph.toJSON();
+              var parsed = JSON.parse($scope.graph.content);
+              angular.forEach(parsed.cells,function(val){
+                if(val.id == id){
+                  val.backendModelParams.name = prop.name;
+                  val.attrs[".name"].text = prop.name;
+                }
+              });
+              $scope.graph.content = JSON.stringify(parsed);
+              console.log($scope.graph.content);
+              // $scope.saveGraph();
+              $scope.graph.$update();
+              //$scope.$broadcast('refreshGraph',$scope.graph);
+            }
+
             $("#saveDageflow").click(function () {
-              var getJointGrapObject = JointGraph.toJSON();
+              var getJointGrapObject = JSON.parse($scope.graph.content);
               console.log(getJointGrapObject);
               console.log(JSON.stringify(getJointGrapObject));
               var stages = {};
@@ -363,6 +386,7 @@ angular.module('angular-jointjs-graph')
                     "stageId" : val.id,
                     "dependsOn" : [],
                     "tasks" : [],
+                    "properties":val.properties ? val.properties : {}
                   };
                 }
 
@@ -383,7 +407,8 @@ angular.module('angular-jointjs-graph')
                           },
                           "operatorParams" : {}
                       }
-                    ]
+                    ],
+                    "properties":val.properties ? val.properties : {}
                   };
                 }
 
@@ -641,10 +666,14 @@ angular.module('angular-jointjs-graph')
               $("#saveDageChanges").attr("data-id", id);
               $("#saveDageChanges").attr("data-entityIdentifier", entityIdentifier);
               $('#dagFlowEdit').modal('show');
+               
                var name = $("g[model-id=" + id + "] .name tspan").html();
                var country = $("g[model-id=" + id + "] .country tspan").html();
-               if(name.substr(0,1)=='&' || country.substr(0,1)=='&'){
-                 country=name="";
+               if(country.substr(0,1)=='&'){
+                 country="";
+               }
+               if(name.substr(0,1)=='&'){
+                 name="";
                }
                $('.modal-body #name').val(name);
                $('.modal-body #country').val(country);
@@ -654,12 +683,30 @@ angular.module('angular-jointjs-graph')
               //$scope.pushNewarrayElements(id);
               $("#saveDageChanges").click(function () {
                 var id = this.getAttribute("data-id");
+                var entityIdentifier = this.getAttribute("data-entityIdentifier");
+                var prop = {};
+
+                if(entityIdentifier == "company"){
+                  prop.name = $('.modal-body #name').val();
+                }
+                else if (entityIdentifier == "task") {
+                  prop = {
+                    name : $('.modal-body #name').val()
+                    // dropdown : $('.modal-body #dpdown').val()
+                  }
+                }
+                else if(entityIdentifier == "beneficiary"){
+                  prop = {}
+                }
+                
                 var name = $('.modal-body #name').val();
-                var country = $('.modal-body #country').val();
+                //var country = $('.modal-body #country').val();
                 // var country = this.closest('.modal-body #pwd').val();
                 //alert(id);
+
+                updateProperties(id,prop);
                 $("g[model-id=" + id + "] .name tspan").html(name);
-                $("g[model-id=" + id + "] .country tspan").html(country);
+                //$("g[model-id=" + id + "] .country tspan").html(country);
               })
             }
 
