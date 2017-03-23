@@ -4,7 +4,7 @@ angular.module('app')
       function addDefault() {
         $scope.$emit('graphDropEvent', {
            dropPoint : {"x":35,"y":272},
-           entityAttributes :{"name":"<name>","desc":"undefined","id":"undefined","entityIdentifier":"beneficiary"} 
+           entityAttributes :{"name":"<name>","desc":"undefined","id":"undefined","entityIdentifier":"beneficiary","nonRemovable":true} 
         });
       };
 

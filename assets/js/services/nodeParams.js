@@ -23,9 +23,6 @@ angular.module('app')
             cy: 19,
             r: 2.5
           },
-          '.cross': {
-            d: 'M0,0 L10,10 M10,0 L0,10'
-          },
           '.editDag': {
             d: 'M0 0 L10 0 L0 10 Z'
           }
@@ -43,6 +40,9 @@ angular.module('app')
           }
 
           return {
+            '.cross': backendModelParams.nonRemovable ? undefined :{
+              d: 'M0,0 L10,10 M10,0 L0,10'
+            },
             '.icon.beneficiary': {
               display: showBeneficiaryIcon ? 'block': 'none',
               text: '\ue60f'

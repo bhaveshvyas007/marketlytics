@@ -376,11 +376,21 @@ angular.module('angular-jointjs-graph')
               var getJointGrapObject = JSON.parse($scope.graph.content);
               console.log(getJointGrapObject);
               console.log(JSON.stringify(getJointGrapObject));
+              var dag = {};
               var stages = {};
               var tasks = {};
               var links = {};
 
               angular.forEach(getJointGrapObject.cells, function (val) {
+                if (val.type == 'html.Element' && val.backendModelParams.entityIdentifier == 'beneficiary') {
+                  dag[val.id] ={
+                    "dagId" : val.id,
+                    "dependsOn" : [],
+                    "stages" : [],
+                    "properties":val.properties ? val.properties : {}
+                  };
+                }
+
                 if (val.type == 'html.Element' && val.backendModelParams.entityIdentifier == 'company') {
                   stages[val.id] ={
                     "stageId" : val.id,
@@ -423,29 +433,530 @@ angular.module('angular-jointjs-graph')
                   tasks[val.target.id].dependsOn.push(val.source.id);
                 else if(stages[val.target.id])
                   stages[val.target.id].dependsOn.push(val.source.id);
+                else if(dag[val.target.id])
+                  dag[val.target.id].dependsOn.push(val.source.id);
                   
                 if(stages[val.source.id] && tasks[val.target.id]){
                   stages[val.source.id].tasks.push(tasks[val.target.id]);
                 }
+                else if(dag[val.source.id] && stages[val.target.id]){
+                  dag[val.source.id].stages.push(stages[val.target.id]);
+                }
               });
 
-              console.log('stages',stages);
+              console.log('dag',dag);
 
               var inArrayFormat = [];
-              angular.forEach(stages,function(val){
+              angular.forEach(dag,function(val){
                 inArrayFormat.push(val);
               });
               console.log("*******DAG JSON*******");
+              inArrayFormat[0].stages = [ 
+        {
+            "stageId" : "0",
+            "dependsOn" : [],
+            "tasks" : [ 
+                {
+                    "taskId" : "0",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-account",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "ea2eb904-f4d1-4365-ab9e-a8b0825408de",
+                                    "version" : "1490112991"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "1",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-account_status_type",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "80c39cc7-f2a8-40ee-953f-b6586da5783b",
+                                    "version" : "1490113400"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "2",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-account_type",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "0c9c2d41-26cf-4e7f-a884-eeffee82814d",
+                                    "version" : "1490113619"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "3",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-address",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "f1f7cee1-081e-44fa-8e44-fbb37c12ebdc",
+                                    "version" : "1490113834"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "4",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-bank",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "be1ee064-1699-4ddc-bdf8-b1aa46a9bd7c",
+                                    "version" : "1490114010"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "5",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-branch",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "c18b766e-77fe-4319-b6c5-8cb61bd56d18",
+                                    "version" : "1490114224"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "6",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-branch_type",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "fc9bd7db-dad9-4bfd-8c8f-f178ecc6b261",
+                                    "version" : "1490114336"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "7",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-customer",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "853c0149-f51a-413e-9e5f-a0dd6860a296",
+                                    "version" : "1490115065"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "8",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-product type",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "6eb56e2c-03e3-4434-8557-29b7cbeeb6aa",
+                                    "version" : "1490115238"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "9",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-transaction",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "72eeaf8e-da21-41dd-bb11-3381f15a526c",
+                                    "version" : "1490115482"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "10",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on source-transaction type",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "9028015c-049a-4845-8e0e-d245f5b6a1d0",
+                                    "version" : "1490115619"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }
+            ]
+        }, 
+        {
+            "stageId" : "1",
+            "dependsOn" : [],
+            "tasks" : [ 
+                {
+                    "taskId" : "0",
+                    "dependsOn" : [],
+                    "name" : "Load Dimention_0",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "6356a9f8-f5c5-454b-9cbe-0d6ecc452b1a"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "1",
+                    "dependsOn" : [],
+                    "name" : "Load Dimention_1",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "d2cc6181-9104-4f2d-b220-2cd29a69dabe"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "2",
+                    "dependsOn" : [],
+                    "name" : "Load Dimention_2",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "f06e9f5d-3b8b-4daf-9900-a9b641cbb5db"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "3",
+                    "dependsOn" : [],
+                    "name" : "Load Dimention_3",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "ec398401-8495-419f-bde7-76db137f3088"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "4",
+                    "dependsOn" : [],
+                    "name" : "Load Dimention_4",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "bfef7565-e873-42ba-9e60-482751a24003"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "5",
+                    "dependsOn" : [],
+                    "name" : "Load Dimention_5",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "4f875b10-9534-4f9d-b9e5-b4cae8e7bf0d"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }
+            ]
+        }, 
+        {
+            "stageId" : "2",
+            "dependsOn" : [],
+            "tasks" : [ 
+                {
+                    "taskId" : "0",
+                    "dependsOn" : [],
+                    "name" : "Load Fact table",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "map",
+                                    "uuid" : "850eec61-2047-4d94-aab1-6117d7f84bd6"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }
+            ]
+        }, 
+        {
+            "stageId" : "3",
+            "dependsOn" : [],
+            "tasks" : [ 
+                {
+                    "taskId" : "0",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-dim_account",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "05f1acf0-ad0b-4f21-954d-d8a380dc42c6",
+                                    "version" : "1490116757"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "1",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-dim_address",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "a33f238a-f542-4f40-b2b8-d7c1290b1480",
+                                    "version" : "1490117001"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "2",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-dim_bank",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "f2d79ecf-f357-444b-8e85-4221cd9ffe33",
+                                    "version" : "1490117199"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "3",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-dim_branch",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "e3e5d90a-0d07-4894-98b0-dab7d5407fb5",
+                                    "version" : "1490117473"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "4",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-dim_customer",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "38b50dc4-3f2b-48d3-b5ba-e1ea6718a692",
+                                    "version" : "1490118940"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "5",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-dim_transaction_type",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "328e0a75-9614-4000-a2cd-2d23fceaa66c",
+                                    "version" : "1490119254"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }, 
+                {
+                    "taskId" : "6",
+                    "dependsOn" : [],
+                    "name" : "DQ groups on target-fact_transaction",
+                    "operators" : [ 
+                        {
+                            "operatorId" : "0",
+                            "dependsOn" : [],
+                            "operatorInfo" : {
+                                "ref" : {
+                                    "type" : "dqgroup",
+                                    "uuid" : "9a13ee57-22f0-48d4-a0c6-914e1e39183b",
+                                    "version" : "1490119549"
+                                }
+                            },
+                            "filterInfo" : []
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
+
+
               console.log(JSON.stringify(inArrayFormat));
 
               var joonaObj = [];
               angular.forEach(inArrayFormat,function(val){
-                
+                debugger;
                 joonaObj.push(
                   {"type":"html.Element",
                   "position":{
-                  "x":649,
-                  "y":95
+                  "x":35,
+                  "y":272
                   },
                   "size":{
                   "width":1,
@@ -455,8 +966,8 @@ angular.module('angular-jointjs-graph')
                   "backendModelParams":{
                   "name":"<name>",
                   "desc":"undefined",
-                  "id":val.stageId,
-                  "entityIdentifier":"company",
+                  "id":val.dagId,
+                  "entityIdentifier":"beneficiary",
                   "country":"<country>"
                   },
                   "options":{
@@ -467,18 +978,18 @@ angular.module('angular-jointjs-graph')
                   "z":1,
                   "attrs":{
                   "ellipse":{
-                  "fill":"lightcoral"
+                  "fill":"lightblue"
                   },
                   ".icon.beneficiary":{
-                  "display":"none",
+                  "display":"block",
                   "text":""
                   },
                   ".icon.company":{
-                  "display":"block",
+                  "display":"none",
                   "text":""
                   },
                   ".icon.task":{
-                  "display":"block",
+                  "display":"none",
                   "text":""
                   },
                   ".name":{
@@ -503,13 +1014,13 @@ angular.module('angular-jointjs-graph')
                       "id":dependancy
                       },
                       "target":{
-                      "id":val.stageId
+                      "id":val.dagId
                       },
                       "backendModelParams":{
                       "id":1
                       },
                       "isChartNode":false,
-                      "id":val.stageId+"_"+dependancy,
+                      "id":val.dagId+"_"+dependancy,
                       "z":3,
                       "vertices":[
                       {
@@ -539,14 +1050,18 @@ angular.module('angular-jointjs-graph')
                   });
                 }
 
-                if(val.tasks.length > 0){
-                  angular.forEach(val.tasks,function (task) {
+                if(val.stages.length > 0){
+                  var stageYPos = 80;
+                  var taskXPos = 300;
+                  angular.forEach(val.stages,function (stage) {
+                    stage.stageId = Math.round(Math.random()*1000000000).toString();
+                    stageYPos = stageYPos + 100;
                     joonaObj.push(
                       {
                         "type":"html.Element",
                         "position":{
-                        "x":419,
-                        "y":278
+                        "x": 200,
+                        "y": stageYPos
                         },
                         "size":{
                         "width":1,
@@ -557,18 +1072,18 @@ angular.module('angular-jointjs-graph')
                         "name":"<name>",
                         "desc":"undefined",
                         "id":1,
-                        "entityIdentifier":"task",
+                        "entityIdentifier":"company",
                         "country":"<country>"
                         },
                         "options":{
                         "interactive":true
                         },
                         "isChartNode":true,
-                        "id":task.taskId,
+                        "id":stage.stageId,
                         "z":2,
                         "attrs":{
                           "ellipse":{
-                          "fill":"lightblue"
+                          "fill":"lightcoral"
                           },
                           ".icon.beneficiary":{
                           "display":"none",
@@ -579,7 +1094,7 @@ angular.module('angular-jointjs-graph')
                           "text":""
                           },
                           ".icon.task":{
-                          "display":"block",
+                          "display":"none",
                           "text":""
                           },
                           ".name":{
@@ -595,8 +1110,8 @@ angular.module('angular-jointjs-graph')
                         }
                       }
                     )
-                    if(task.dependsOn.length > 0){
-                      angular.forEach(task.dependsOn,function (dependancy) {
+                    if(stage.dependsOn.length > 0){
+                      angular.forEach(stage.dependsOn,function (dependancy) {
                         joonaObj.push(
                         {
                           "type":"link",
@@ -604,13 +1119,13 @@ angular.module('angular-jointjs-graph')
                           "id":dependancy
                           },
                           "target":{
-                          "id":task.taskId
+                          "id":stage.stageId
                           },
                           "backendModelParams":{
                           "id":1
                           },
                           "isChartNode":false,
-                          "id":task.taskId+"_"+dependancy,
+                          "id":stage.stageId+"_"+dependancy,
                           "z":3,
                           "vertices":[
                           {
@@ -639,13 +1154,126 @@ angular.module('angular-jointjs-graph')
                         )
                       });
                     }
+
+                    if(stage.tasks.length > 0){
+                      taskXPos = taskXPos + 200
+                      var taskYPos = 80;
+                      angular.forEach(stage.tasks,function (task) {
+                        task.taskId = Math.round(Math.random()*1000000000).toString();
+                        taskYPos = taskYPos + 100
+                        joonaObj.push(
+                          {
+                            "type":"html.Element",
+                            "position":{
+                            "x": taskXPos ,
+                            "y": taskYPos
+                            },
+                            "size":{
+                            "width":1,
+                            "height":1
+                            },
+                            "angle":0,
+                            "backendModelParams":{
+                            "name": task.name || "<name>",
+                            "desc":"undefined",
+                            "id":1,
+                            "entityIdentifier":"task",
+                            "country":"<country>"
+                            },
+                            "options":{
+                            "interactive":true
+                            },
+                            "isChartNode":true,
+                            "id":task.taskId,
+                            "z":2,
+                            "attrs":{
+                              "ellipse":{
+                              "fill":"lightblue"
+                              },
+                              ".icon.beneficiary":{
+                              "display":"none",
+                              "text":""
+                              },
+                              ".icon.company":{
+                              "display":"none",
+                              "text":""
+                              },
+                              ".icon.task":{
+                              "display":"block",
+                              "text":""
+                              },
+                              ".name":{
+                              "text":task.name || "<name>",
+                              "y":"19px",
+                              "x-alignment":"left"
+                              },
+                              ".country":{
+                              "text":"<country>",
+                              "y":"31px",
+                              "x-alignment":"left"
+                              }
+                            }
+                          }
+                        )
+                        if(task.dependsOn.length > 0){
+                          angular.forEach(task.dependsOn,function (dependancy) {
+                            joonaObj.push(
+                            {
+                              "type":"link",
+                              "source":{
+                              "id":dependancy
+                              },
+                              "target":{
+                              "id":task.taskId
+                              },
+                              "backendModelParams":{
+                              "id":1
+                              },
+                              "isChartNode":false,
+                              "id":task.taskId+"_"+dependancy,
+                              "z":3,
+                              "vertices":[
+                              {
+                              "x":592.5,
+                              "y":220
+                              }
+                              ],
+                              "attrs":{
+                                ".marker-target":{
+                                "d":"M 10 0 L 0 5 L 10 10 z"
+                                },
+                                ".marker-source":{
+                                "display":"none"
+                                },
+                                ".marker-vertex-remove-area":{
+                                "display":"none"
+                                },
+                                ".marker-vertex-remove":{
+                                "display":"none"
+                                },
+                                ".marker-vertex":{
+                                "r":"5"
+                                }
+                                }
+                              }
+                            )
+                          });
+                        }
+                      });
+                    }
                   });
                 }
 
               });
               console.log("*******Converted JSON*******");
               console.log(JSON.stringify(joonaObj));
-              $scope.graph.cells=joonaObj;
+              //console.log(JSON.stringify(JointGraph.toJSON()))
+              $scope.graph.content=JSON.stringify({"cells":joonaObj});
+              $scope.graph.$update();
+
+              setTimeout(function() {
+                location.reload();
+              }, 1000);
             });
             $scope.dagPopover = function (id, entityIdentifier) {
               console.log(id, entityIdentifier);
@@ -953,7 +1581,6 @@ angular.module('angular-jointjs-graph')
         },
         markPresentOnGraph: function (graphElement) {
           var ids = getIdentifiers(graphElement);
-
           entityToJointModelMap[ids.typeIdentifier][ids.uniqueId] = graphElement.id;
           var entity = findEntity(ids);
 
@@ -1230,6 +1857,7 @@ angular.module('angular-jointjs-graph')
         }
       }
 
+      var cross = "";
       return {
         create: function (entityAttributes, dropPoint) {
           var EntityFactory = getFactory(entityAttributes),
@@ -1245,8 +1873,14 @@ angular.module('angular-jointjs-graph')
               },
               isChartNode: true
             };
-
           if (ParamsFactory) {
+            if(entityAttributes.nonRemovalbe == true){
+              cross = ParamsFactory.defaults['.cross'];
+              ParamsFactory.defaults['.cross'] = undefined;
+            }
+            else {
+              ParamsFactory.defaults['.cross'] = cross;
+            }
             params.attrs = ParamsFactory.computed(entityAttributes);
           }
 
@@ -1479,7 +2113,6 @@ angular.module('angular-jointjs-graph')
       return {
         get: function (backendModelParams) {
           var paramsFactory = FactoryMap.get('JointLinkParams');
-
           if (paramsFactory) {
             angular.extend(defaults, paramsFactory.get(backendModelParams));
           }
@@ -1738,7 +2371,6 @@ angular.module('angular-jointjs-graph')
     function (JointNodeModel, JointLinkModel, $q) {
       function wrapModel(JointModel) {
         var ModelConstructor = JointModel.getConstructor();
-
         //We need a wrapper model around the original constructor since we are going to conditionally
         //prototype methods on it that shouldn't be available on all model instances.
         function Model(params) {
